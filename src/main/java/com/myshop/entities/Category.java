@@ -2,10 +2,12 @@ package com.myshop.entities;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import lombok.Data;
@@ -14,10 +16,10 @@ import lombok.Data;
 @Data
 public class Category {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer categoryId;
-	private String categoryName;
-	private boolean active;
-	@OneToMany(mappedBy = "category")
+	private Integer parentCategoryId;
+	@ManyToOne(cascade = CascadeType.ALL)
+	private Category categoryName;
+	@OneToMany(cascade = CascadeType.ALL)
 	private List<Product> products;
 }

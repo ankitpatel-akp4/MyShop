@@ -1,5 +1,7 @@
 package com.myshop.entities;
 
+import java.util.Map;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,16 +15,10 @@ import lombok.Data;
 @Data
 public class Product {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer productId;
 	private String productName;
-	private String brand;
-	private String price;
 	private String description;
-	private float rating;
-	private Integer noRatings;
-	@OneToOne(mappedBy = "product")
-	private OrderDetails orderDetails;
-	@ManyToOne
-	private Category category;
+	private String productImage;
+	@OneToOne
+	private Category categoryId;
 }
