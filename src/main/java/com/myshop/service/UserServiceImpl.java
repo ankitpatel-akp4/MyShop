@@ -24,9 +24,11 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	public ShopingCart addShopingCart() throws UserException {
-		ShopingCart shopingCart = new ShopingCart();
+		
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
 		User currentUser = getUserByEmail(email);
+		if(currentUser.getShopingCart()!= null) throw new UserException("you already have a cart");
+		ShopingCart shopingCart = new ShopingCart();
 		shopingCart.setUser(currentUser);
 		currentUser.setShopingCart(shopingCart);
 		return userRepo.save(currentUser).getShopingCart();

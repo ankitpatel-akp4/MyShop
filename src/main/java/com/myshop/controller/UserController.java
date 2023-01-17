@@ -27,6 +27,7 @@ import com.myshop.entities.ProductItem;
 import com.myshop.entities.ShopingCart;
 import com.myshop.entities.User;
 import com.myshop.exception.AddressException;
+import com.myshop.exception.ProductException;
 import com.myshop.service.AddressService;
 import com.myshop.service.ProductService;
 import com.myshop.service.UserServiceImpl;
@@ -85,6 +86,12 @@ public class UserController {
 	}
 	
 	
+	@GetMapping(value = "/carts")
+	public ResponseEntity<ShopingCart> getShopingChart() {
+		String email = SecurityContextHolder.getContext().getAuthentication().getName();
+		User currentUser = userService.getUserByEmail(email);
+		return new ResponseEntity<ShopingCart>(currentUser.getShopingCart(),HttpStatus.OK);
+	}
 	@PostMapping(value = "/carts")
 	public ResponseEntity<ShopingCart> addShopingChart() {
 		
@@ -96,18 +103,19 @@ public class UserController {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
 		User currentUser = userService.getUserByEmail(email);
 		currentUser.getShopingCart().getProductItems().add(productItem);
-		return new ResponseEntity<ShopingCart>(currentUser.getShopingCart(),HttpStatus.OK);
+		
+		return new ResponseEntity<ShopingCart>(userService.updateUser(currentUser).getShopingCart(),HttpStatus.OK);
 	}
 	
 	@DeleteMapping(value = "/carts")
 	public ResponseEntity<ShopingCart> deleteProductItem(@RequestParam Long productItemId) {
 		ProductItem productItem = productService.getAllProductItemById(productItemId);
+		
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
 		User currentUser = userService.getUserByEmail(email);
-		if(currentUser.getShopingCart()==null) {
-			
-		}
+		if(currentUser.getShopingCart().getProductItems().contains(productItem))
 		currentUser.getShopingCart().getProductItems().remove(productItem);
+		else throw new ProductException("you dont have this item in your cart");
 		userService.updateUser(currentUser);
 		return new ResponseEntity<ShopingCart>(currentUser.getShopingCart(),HttpStatus.OK);
 	}

@@ -40,6 +40,8 @@ public class ProductItem {
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "product_config_num", joinColumns = @JoinColumn(name = "productItemId"),inverseJoinColumns = @JoinColumn(name ="variationValueNumId"))
 	private Set<VariationValueNum> variationValueNums = new HashSet<>();
+//	@ManyToMany(mappedBy = "productItems")
+//	private Set<ProductItem> productItems = new HashSet<>();
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

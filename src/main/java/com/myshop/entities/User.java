@@ -49,7 +49,7 @@ public class User{
 //	@OneToMany(cascade = CascadeType.ALL)
 //	@JoinColumn(name = "paymentMethodId")
 //	private Set<PaymentMethod> paymentMathods = new HashSet<>();
-	@OneToOne(cascade = CascadeType.ALL,mappedBy = "userId")
+	@OneToOne(cascade = CascadeType.ALL,mappedBy = "user")
 	@JoinColumn(name = "shopingCartId")
 	private ShopingCart shopingCart;
 //	@JsonIgnore
