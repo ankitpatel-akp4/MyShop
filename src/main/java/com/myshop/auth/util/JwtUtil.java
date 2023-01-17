@@ -33,6 +33,7 @@ public class JwtUtil {
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
+        System.out.println(claims);
         return claimsResolver.apply(claims);
     }
     private Claims extractAllClaims(String token) {
@@ -45,11 +46,12 @@ public class JwtUtil {
 
     public String generateToken(Authentication authentication) {
         Map<String, Object> claims = new HashMap<>();
+        claims.put("roles", authentication.getAuthorities());
         return createToken(claims, authentication.getName());
     }
 
     private String createToken(Map<String, Object> claims, String subject) {
-    	System.out.println(SECRET_KEY);
+    	
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();

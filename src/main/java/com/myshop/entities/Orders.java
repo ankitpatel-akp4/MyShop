@@ -11,25 +11,31 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 
 @Entity
 @Data
 public class Orders {
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer orderId;
 	private LocalDateTime orderDateTime;
 	private LocalDateTime deliveryDateTime;
 	private Double totalAmount;
 	@OneToOne
-	@JoinColumn(name = "user_id")
+	@JoinColumn(name = "userId")
+	@JsonIgnore
 	private User user;
 	@OneToOne
-	@JoinColumn(name = "payment_method_id")
-	private PaymentMathod paymentMathod;
+	@JoinColumn(name = "paymentMethodId")
+	private PaymentMethod paymentMathod;
 	@OneToOne
+	@JoinColumn(name = "shippingAddressId")
 	private Address address;
 	@OneToOne
+	@JoinColumn(name = "shippingMethodId")
 	private ShippingMthod shippingMthod;
 	
 	

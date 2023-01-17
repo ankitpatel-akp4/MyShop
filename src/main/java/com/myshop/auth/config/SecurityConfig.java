@@ -65,16 +65,20 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .cors(Customizer.withDefaults())
+        		
                 .csrf(AbstractHttpConfigurer::disable)
        		 .authorizeHttpRequests( (auth)->auth
 				
-				.antMatchers("/auth/home","/auth**","/v2/api-docs","/auth/signup",
+				.antMatchers("/","/auth/login","/v2/api-docs","/auth/signup",
                         "/configuration/ui",
                         "/swagger-resources/**",
                         "/configuration/security",
-                        "/swagger-ui.html",
-                        "/webjars/**","/token").permitAll()
-				.antMatchers("/auth/homeP").authenticated()
+                        "/swagger-ui.html","/swagger-ui/",
+                        "/webjars/**").permitAll()
+				.antMatchers("/users**").hasAnyAuthority("user","amin")
+				.antMatchers("/home","/auth/make_admin","/products**","/products/**").hasAnyAuthority("admin")
+				
+//				.anyRequest().authenticated()
 				
        		    )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
