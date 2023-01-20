@@ -37,10 +37,7 @@ import com.myshop.service.UserServiceImpl;
 public class UserController {
 	@Autowired
 	private UserServiceImpl userService;
-	@Autowired
-	private AddressService addressService;
-	@Autowired
-	private ProductService productService;
+
 	
 	@GetMapping(value = "")
 	public ResponseEntity<List<User>> getAllUser() {
@@ -58,67 +55,8 @@ public class UserController {
 		return new ResponseEntity<>(signupRes2,HttpStatus.OK);
 	}
 	
-	@PostMapping(value = "/addresses")
-	public ResponseEntity<Set<Address>> addAddress(@RequestBody Address address) {
-		String email = SecurityContextHolder.getContext().getAuthentication().getName();
-		User currentUser = userService.getUserByEmail(email);
-		currentUser.getAddresses().add(address);
-		address.getUsers().add(currentUser);
-		User user = userService.updateUser(currentUser);
-		return new ResponseEntity<Set<Address>>(user.getAddresses(),HttpStatus.OK);
-	}
-	
-	@PutMapping(value = "/addresses")
-	public ResponseEntity updateAddress(@RequestBody Address address) {
-		return new ResponseEntity(addressService.updateAddress(address),HttpStatus.OK);
-	}
-	@GetMapping(value = "/addresses")
-	public ResponseEntity<Set<Address>> getAllAddress() {
-		String email = SecurityContextHolder.getContext().getAuthentication().getName();
-		User currentUser = userService.getUserByEmail(email);
-		return new ResponseEntity<Set<Address>>(currentUser.getAddresses(),HttpStatus.OK);
-	}
-	
-	@DeleteMapping(value = "/addresses")
-	public ResponseEntity deleteAddress(@RequestParam Long addressId) {
-		Address address = addressService.deleteAddressById(addressId);
-		return new ResponseEntity(address,HttpStatus.OK);
-	}
 	
 	
-	@GetMapping(value = "/carts")
-	public ResponseEntity<ShopingCart> getShopingChart() {
-		String email = SecurityContextHolder.getContext().getAuthentication().getName();
-		User currentUser = userService.getUserByEmail(email);
-		return new ResponseEntity<ShopingCart>(currentUser.getShopingCart(),HttpStatus.OK);
-	}
-	@PostMapping(value = "/carts")
-	public ResponseEntity<ShopingCart> addShopingChart() {
-		
-		return new ResponseEntity<ShopingCart>(userService.addShopingCart(),HttpStatus.OK);
-	}
-	@PatchMapping(value = "/carts")
-	public ResponseEntity<ShopingCart> addProductItem(@RequestParam Long productItemId) {
-		ProductItem productItem = productService.getAllProductItemById(productItemId);
-		String email = SecurityContextHolder.getContext().getAuthentication().getName();
-		User currentUser = userService.getUserByEmail(email);
-		currentUser.getShopingCart().getProductItems().add(productItem);
-		
-		return new ResponseEntity<ShopingCart>(userService.updateUser(currentUser).getShopingCart(),HttpStatus.OK);
-	}
-	
-	@DeleteMapping(value = "/carts")
-	public ResponseEntity<ShopingCart> deleteProductItem(@RequestParam Long productItemId) {
-		ProductItem productItem = productService.getAllProductItemById(productItemId);
-		
-		String email = SecurityContextHolder.getContext().getAuthentication().getName();
-		User currentUser = userService.getUserByEmail(email);
-		if(currentUser.getShopingCart().getProductItems().contains(productItem))
-		currentUser.getShopingCart().getProductItems().remove(productItem);
-		else throw new ProductException("you dont have this item in your cart");
-		userService.updateUser(currentUser);
-		return new ResponseEntity<ShopingCart>(currentUser.getShopingCart(),HttpStatus.OK);
-	}
 	
 	
 	

@@ -23,16 +23,6 @@ public class UserServiceImpl implements UserService {
 		return userRepo.save(user);
 	}
 	
-	public ShopingCart addShopingCart() throws UserException {
-		
-		String email = SecurityContextHolder.getContext().getAuthentication().getName();
-		User currentUser = getUserByEmail(email);
-		if(currentUser.getShopingCart()!= null) throw new UserException("you already have a cart");
-		ShopingCart shopingCart = new ShopingCart();
-		shopingCart.setUser(currentUser);
-		currentUser.setShopingCart(shopingCart);
-		return userRepo.save(currentUser).getShopingCart();
-	}
 
 	@Override
 	public User delete(Long userId) throws UserException {

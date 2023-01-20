@@ -20,7 +20,7 @@ import lombok.Data;
 public class Orders {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer orderId;
+	private Long orderId;
 	private LocalDateTime orderDateTime;
 	private LocalDateTime deliveryDateTime;
 	private Double totalAmount;
@@ -37,6 +37,9 @@ public class Orders {
 	@OneToOne
 	@JoinColumn(name = "shippingMethodId")
 	private ShippingMthod shippingMthod;
+	@OneToOne
+	@JoinColumn(name = "productItemId")
+	private ProductItem productItem;
 	
 	
 }

@@ -72,7 +72,7 @@ public class ProductService {
 		if(productItems.isEmpty()) throw new ProductException("no product found in the database");
 		return productItems;
 	}
-	public ProductItem getAllProductItemById(Long productItemId) {
+	public ProductItem getProductItemById(Long productItemId) {
 		ProductItem productItem = productItemRepo.findById(productItemId).orElseThrow(()->new ProductException("no prduct item fount with id: "+productItemId));
 		
 		return productItem;
